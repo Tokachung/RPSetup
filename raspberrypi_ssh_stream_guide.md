@@ -95,3 +95,6 @@ python3 stream.py
   ```
 - Add a static IP in your router so your Pi’s address doesn’t change.
 - Use VS Code’s integrated terminal to run and debug scripts directly on the Pi.
+
+### Useful Resources
+- https://github.com/raspberrypi/picamera2
