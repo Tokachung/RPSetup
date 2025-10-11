@@ -37,3 +37,5 @@ def requires_auth(f):
 def video():
     return Response(gen_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+app.run(host='0.0.0.0', port=8080, threaded=True)
