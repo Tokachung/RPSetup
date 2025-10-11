@@ -30,7 +30,13 @@ face_cascade = cv2.CascadeClassifier(CASCADE_PATH)
 app = Flask(__name__)
 
 def gen_inference_frames():
+    # target FPS for inference
+    target_fps = 5
+    frame_interval = 1.0 / target_fps
+
     while True:
+        start_ts = time.time()
+
         frame = picam2.capture_array()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
@@ -45,6 +51,12 @@ def gen_inference_frames():
             continue
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n')
+
+        # throttle to target FPS (sleep for remaining time in interval)
+        elapsed = time.time() - start_ts
+        to_sleep = frame_interval - elapsed
+        if to_sleep > 0:
+            time.sleep(to_sleep)
 
 @app.route('/video_infer')
 def video_infer():
