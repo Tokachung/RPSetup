@@ -1,5 +1,6 @@
 from picamera2 import Picamera2
 from flask import Flask, Response
+import cv2
 
 picam2 = Picamera2()
 picam2.configure(picam2.create_video_configuration(main={"size": (640, 480)}))
